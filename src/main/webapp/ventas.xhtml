@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      lang="en">
+    <h:head>
+        <title>Ventas</title>
+        <style>
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .menu-container {
+                margin-bottom: 20px; /* Espacio entre el menú y el contenido */
+            }
+
+            .table-container {
+                width: 100%; /* Hacer que el contenedor de la tabla ocupe el ancho completo */
+            }
+
+            .custom-table {
+                width: 100%; /* Asegurarse de que la tabla ocupe todo el ancho */
+                border-collapse: collapse; /* Colapsar bordes */
+            }
+
+            .custom-table th, .custom-table td {
+                border: 1px solid #ccc; /* Bordes de celda */
+                padding: 8px; /* Espacio dentro de las celdas */
+                text-align: left; /* Alinear texto a la izquierda */
+            }
+
+            .custom-table th {
+                background-color: #f2f2f2; /* Color de fondo para encabezados */
+            }
+
+            .ui-button-help {
+                background-color: #007bff; /* Color de fondo para botón de ayuda */
+                color: white; /* Color de texto */
+            }
+
+            .ui-button-secundary {
+                background-color: #6c757d; /* Color de fondo para botón secundario */
+                color: white; /* Color de texto */
+            }
+
+            .ui-button-success {
+                background-color: #28a745; /* Color de fondo para botón de éxito */
+                color: white; /* Color de texto */
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <p:growl id="mensajes" showDetail="true" life="3000" />
+
+        <h1>Lista de Ventas</h1>
+
+        <div class="menu-container">
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="Clientes">
+                        <p:menuitem value="Lista de clientes" outcome="clientes"/>
+                    </p:submenu>
+                    <p:submenu label="Productos">
+                        <p:menuitem value="Lista de productos" outcome="productos"/>
+                    </p:submenu>
+                    <p:submenu label="Ventas">
+                        <p:menuitem value="Lista de Ventas" outcome="ventas"/>
+                        <p:menuitem value="Agregar nueva venta" outcome="agregarVenta" />
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
+        </div>
+        
+        <div class="container">
+            <div class="table-container">
+                <p:dialog header="Detalles de la Venta" widgetVar="digDetalleVenta" modal="true" width="700" closable="false">
+                    <h:form id="formularioDetalleVenta">
+                        <p:commandButton id="cerrar" value="Cerrar"
+                                         action="#{ventaBean.limpiarVenta()}" 
+                                         onclick="PF('digDetalleVenta').hide()"
+                                         update=":listaVentasForm"  />
+                        <p:dataTable id="tablaDetalles" value="#{ventaBean.obtenerDetalles()}" var="detalle"
+                                     paginator="true" rows="5"
+                                     emptyMessage="Sin resultados"
+                                     styleClass="custom-table">
+                            <p:column headerText="ID">
+                                #{detalle.id}
+                            </p:column>
+                            <p:column headerText="Producto">
+                                #{detalle.producto.descripcion}
+                            </p:column>
+                            <p:column headerText="Cantidad">
+                                #{detalle.cantidad}
+                            </p:column>
+                            <p:column headerText="Precio">
+                                #{detalle.producto.precio}
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:dialog>
+
+                <h:form id="listaVentasForm">
+                    <p:dataTable id="tablaVentas" value="#{ventaBean.obtenerVentas()}" var="venta"
+                                 paginator="true" rows="5" 
+                                 emptyMessage="No hay ventas registradas."
+                                 styleClass="custom-table"> 
+                        <p:column headerText="ID">
+                            #{venta.id}
+                        </p:column>
+                        <p:column headerText="Fecha">
+                            #{venta.fecha}
+                        </p:column>
+                        <p:column headerText="Cliente">
+                            #{venta.nombreCliente}
+                        </p:column>
+                        <p:column headerText="Correo del Cliente">
+                            #{venta.correoCliente}
+                        </p:column>
+                        <p:column headerText="Total (MXN)">
+                            #{venta.total}
+                        </p:column>
+                        <p:column headerText="Acciones">
+                            <h:panelGroup layout="block">
+                                <p:commandButton value="Detalles" 
+                                                 action="#{ventaBean.cargarVenta(venta)}"
+                                                 update="formularioDetalleVenta:tablaDetalles"
+                                                 oncomplete="PF('digDetalleVenta').show();" process="@this"
+                                                 styleClass="ui-button-help" />
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" style="margin-top:5px;">
+                                <p:commandButton value="Imprimir" 
+                                                 action="#{serviciosBean.imprimir(venta)}"
+                                                 update=":mensajes"
+                                                 styleClass="ui-button-secundary" />
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" style="margin-top:5px;">
+                                <p:commandButton value="Enviar" 
+                                                 action="#{serviciosBean.enviar(venta)}"
+                                                 update=":mensajes"
+                                                 styleClass="ui-button-success" />
+                            </h:panelGroup>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </h:body>
+</html>

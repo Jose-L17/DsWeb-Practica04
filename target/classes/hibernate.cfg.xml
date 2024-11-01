@@ -1,0 +1,25 @@
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Conexión a la base de datos -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/testdb</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">#Darkness171002</property>
+        
+        <!-- Dialecto de PostgreSQL -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        
+        <!-- Opciones -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        
+        <!-- Mapeo de clases -->
+        <mapping class="org.uv.dsweb.practica04.modelos.Cliente" />
+        <mapping class="org.uv.dsweb.practica04.modelos.Producto" />
+        <mapping class="org.uv.dsweb.practica04.modelos.Venta" />
+        <mapping class="org.uv.dsweb.practica04.modelos.DetalleVenta" />
+    </session-factory>
+</hibernate-configuration>

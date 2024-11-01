@@ -1,0 +1,11 @@
+org\uv\dsweb\practica04\modelos\Venta.class
+org\uv\dsweb\practica04\beans\ClienteBean.class
+org\uv\dsweb\practica04\HibernateUtil.class
+org\uv\dsweb\practica04\modelos\DetalleVenta.class
+org\uv\dsweb\practica04\modelos\Producto.class
+org\uv\dsweb\practica04\beans\ProductoBean.class
+org\uv\dsweb\practica04\beans\ServiciosBean.class
+org\uv\dsweb\practica04\beans\ServiciosBean$1.class
+org\uv\dsweb\practica04\modelos\Cliente.class
+org\uv\dsweb\practica04\beans\VentaBean.class
+org\uv\dsweb\practica04\modelos\ProductoCantidad.class
